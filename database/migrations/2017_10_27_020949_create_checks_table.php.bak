@@ -1,0 +1,60 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateChecksTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     *
+     * 类型
+    分公司
+    打分项
+    备注
+    星级
+    检查人员
+    受检人员
+
+    检查时间
+    整改状态 1 需要整改 2 整改完成
+    整改说明
+    整改完成时间
+    整改
+     */
+    public function up()
+    {
+        Schema::create('checks', function (Blueprint $table) {
+            $table->increments('id')->comment('checkid');
+            $table->integer('type');
+            $table->integer('area');
+			$table->string('name');
+            $table->string('checkcontent');
+            $table->string('memo');
+            $table->string('starlevel');
+            $table->string('checkusername');
+            $table->integer('checkuserid');
+            $table->string('inspectionname');
+			$table->string('inspectionname');
+            $table->dateTime('checktime');
+            $table->integer('status');
+            $table->string('feedback');
+            $table->dateTime('feedbacktime');
+            $table->integer('feedbackuser');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('checks');
+    }
+}
