@@ -16,7 +16,7 @@
     </div>
 @endsection
 
-@include('log-viewer::_template.footer')
+{{-- @include('log-viewer::_template.footer') --}}
 @section('js')
 
 

@@ -1,30 +1,27 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="/" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
+    <a href="/" class="logo hidden-xs">
       <span class="logo-mini"><b>Big</b></span>
-      <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Big</b>Pang</span>
     </a>
 
     <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-fixed-top" role="navigation">
       <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- Navbar Right Menu -->
+      {{-- <div style="position: absolute;font-size: 1em;line-height: 50px;color: #fff;">互联网安全平台</div> --}}
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-
-          <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-              <span class="hidden-xs">{{auth('admin')->user()->name}}</span>
+              <span class="">{{auth('admin')->user()->name}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
