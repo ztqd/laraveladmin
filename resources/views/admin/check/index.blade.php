@@ -86,10 +86,30 @@
                 </div>
             </div>
             @stop
-
+            <div class="modal fade" id="modal-default">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">详细信息</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">关闭</button>
+                  </div>
+                </div>
+              </div>
+            </div>
             @section('js')
                 <script>
                     $(function () {
+                        var cols = $("#tags-table th").map(function(ind, ele) {
+                            return $(ele).text()
+                        })
+
                         var table = $("#tags-table").DataTable({
                             language: {
                                 "sProcessing": "处理中...",
@@ -122,7 +142,7 @@
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                }
+                                }  
                             },
                             "columns": [
                                 {"data": "id"},
@@ -147,7 +167,7 @@
                                     var row_feedback = {{Gate::forUser(auth('admin')->user())->check('admin.check.feedback') ? 1 : 0}};
                                     var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.check.destroy') ? 1 :0}};
                                     var str = '';
-
+                                    // console.log(data.aoData)
                                     //编辑
                                     if (row_edit) {
                                         str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>';
@@ -163,11 +183,34 @@
                                         str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="delBtn X-Small btn-xs text-danger"><i class="fa fa-times-circle"></i> 删除</a>';
                                     }
 
+                                    str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="details X-Small btn-xs"> 详情</a>';
+
                                     return str;
 
                                 }
                                 }
-                            ]
+                            ],
+                            fnInitComplete  : function(d) {
+                                console.log(d.aoData)
+                                var datas = d.aoData;
+                                // var tables = $('#tags-table').DataTable();
+                                $('.details').on('click', function(e) {
+                                    // console.log(e.target)
+                                    var tds = $(e.target).parent().parent().children('td');
+                                    
+                                    var content = '';
+                                    for ( var i = 1; i < tds.length-1; i ++ ){
+                                        if ($(tds[i]).text() != '') {
+                                            content =  content + '<li>' + cols[i] + '<br />' + $(tds[i]).text() + '</li>'
+                                        }
+                                    }
+
+                                    $('#modal-default .modal-body').html(content)
+                                    $('#modal-default').modal({
+                                        keyboard: true
+                                    })
+                                })
+                            }
                         });
 
                         table.on('preXhr.dt', function () {
