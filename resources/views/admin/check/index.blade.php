@@ -34,19 +34,19 @@
                     <table id="tags-table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th data-sortable="false" class="hidden-sm"></th>
-                            <th class="hidden-sm">类型</th>
-                            <th class="hidden-sm">县区</th>
-                            <th class="hidden-sm">内容</th>
-                            <th class="hidden-sm">备注</th>
-                            <th class="hidden-sm">星级</th>
-                            <th class="hidden-sm">检查人</th>
-                            <th class="hidden-sm">被检查人</th>
-                            <th class="hidden-sm">检查时间</th>
-                            <th class="hidden-sm">状态</th>
-                            <th class="hidden-sm">反馈</th>
-                            <th class="hidden-md">反馈时间</th>
-                            <th class="hidden-md">反馈人</th>
+                            <th data-sortable="false"></th>
+                            <th>类型</th>
+                            <th>县区</th>
+                            <th>内容</th>
+                            <th>备注</th>
+                            <th>星级</th>
+                            <th>检查人</th>
+                            <th>被检查人</th>
+                            <th>检查时间</th>
+                            <th>状态</th>
+                            <th>反馈</th>
+                            <th>反馈时间</th>
+                            <th>反馈人</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
@@ -110,6 +110,23 @@
                             return $(ele).text()
                         })
 
+                        var col = {
+                            // "id": "z",
+                            "type": "类型",
+                            "area": "县区",
+                            "checkcontent": "内容",
+                            "memo": "备注",
+                            "starlevel": "星级",
+                            "checkusername": "检查人",
+                            "inspectionname": "被检查人",
+                            "checktime": "检查时间",
+                            "status": "状态",
+                            "feedback": "反馈",
+                            "feedbacktime": "反馈时间",
+                            "feedbackuser": "反馈人"
+                        }
+
+                      
                         var table = $("#tags-table").DataTable({
                             language: {
                                 "sProcessing": "处理中...",
@@ -145,73 +162,105 @@
                                 }  
                             },
                             "columns": [
-                                {"data": "id"},
+                                {"data": "id", "visible": false },
                                 {"data": "type"},
                                 {"data": "area"},
                                 {"data": "checkcontent"},
-                                {"data": "memo"},
+                                {"data": "memo", "visible": false },
                                 {"data": "starlevel"},
-                                {"data": "checkusername"},
-
-                                {"data": "inspectionname"},
-                                {"data": "checktime"},
-                                {"data": "status"},
-                                {"data": "feedback"},
-                                {"data": "feedbacktime"},
-                                {"data": "feedbackuser"}
+                                {"data": "checkusername", "visible": false },
+                                {"data": "inspectionname", "visible": false },
+                                {"data": "checktime", "visible": false },
+                                {"data": "status", "visible": false },
+                                {"data": "feedback", "visible": false },
+                                {"data": "feedbacktime", "visible": false },
+                                {"data": "feedbackuser", "visible": false },
+                                {"data": ""}
                             ],
                             columnDefs: [
                                 {
-                                    'targets': -1, "render": function (data, type, row) {
-                                    var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.check.edit') ? 1 : 0}};
-                                    var row_feedback = {{Gate::forUser(auth('admin')->user())->check('admin.check.feedback') ? 1 : 0}};
-                                    var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.check.destroy') ? 1 :0}};
-                                    var str = '';
-                                    // console.log(data.aoData)
-                                    //编辑
-                                    if (row_edit) {
-                                        str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>';
+                                    'targets': -1, 
+                                    "render": function (data, type, row) {
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.check.edit') ? 1 : 0}};
+                                        var row_feedback = {{Gate::forUser(auth('admin')->user())->check('admin.check.feedback') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.check.destroy') ? 1 :0}};
+                                        var str = '';
+                                        // console.log(data.aoData)
+                                        //编辑
+                                        if (row_edit) {
+                                            str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 编辑</a>';
+                                        }
+
+                                        //编辑
+                                        if (row_feedback&&row['starlevel']<5) {
+                                            str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/feedback" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 反馈</a>';
+                                        }
+
+                                        //删除
+                                        if (row_delete) {
+                                            str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="delBtn X-Small btn-xs text-danger"><i class="fa fa-times-circle"></i> 删除</a>';
+                                        }
+
+                                        // str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="details btn-xs"> 详情</a>';
+
+                                        return str;
                                     }
-
-                                    //编辑
-                                    if (row_feedback&&row['starlevel']<5) {
-                                        str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/feedback" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 反馈</a>';
-                                    }
-
-                                    //删除
-                                    if (row_delete) {
-                                        str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="delBtn X-Small btn-xs text-danger"><i class="fa fa-times-circle"></i> 删除</a>';
-                                    }
-
-                                    str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="details X-Small btn-xs"> 详情</a>';
-
-                                    return str;
-
-                                }
-                                }
+                                }// ,{
+                                //    "targets": [0,9], 
+                                //    "visible": false 
+                                // }
                             ],
                             fnInitComplete  : function(d) {
-                                console.log(d.aoData)
-                                var datas = d.aoData;
-                                // var tables = $('#tags-table').DataTable();
-                                $('.details').on('click', function(e) {
-                                    // console.log(e.target)
-                                    var tds = $(e.target).parent().parent().children('td');
-                                    
-                                    var content = '';
-                                    for ( var i = 1; i < tds.length-1; i ++ ){
-                                        if ($(tds[i]).text() != '') {
-                                            content =  content + '<li>' + cols[i] + '<br />' + $(tds[i]).text() + '</li>'
-                                        }
-                                    }
+                                $('.X-Small, .delBtn').click(function(e) {
+                                    e.stopPropagation();
+                                });
+                                // console.log(d.aoData)
+                                // var datas = d.aoData;
+                                // // var tables = $('#tags-table').DataTable();
+                                // $('.details').on('click', function(e) {
+                                //     console.log(e.target)
+                                //     var tds = $(e.target).parent().parent().children('td');
+                                //     console.log(tds)
+                                //     var content = '';
+                                //     for ( var i = 1; i < tds.length-1; i ++ ){
+                                //         console.log($(tds[i]).text())
+                                //         if ($(tds[i]).text() != '') {
+                                //             content =  content + '<li>' + cols[i] + '<br />' + $(tds[i]).text() + '</li>'
+                                //         }
+                                //     }
+                                //     console.log(content)
+                                //     $('#modal-default .modal-body').html(content)
+                                //     $('#modal-default').modal({
+                                //         keyboard: true
+                                //     })
 
-                                    $('#modal-default .modal-body').html(content)
-                                    $('#modal-default').modal({
-                                        keyboard: true
-                                    })
-                                })
+
+                                // })
+                                // $('.details').on('click', function(e) {
+                                //     console.log($(this).parent().parent());
+                                //     var data = table.row( this ).data();
+                                //     console.log(data)
+                                // })
                             }
                         });
+                       
+                        $('#tags-table tbody').on('click', 'tr', function () {
+                            console.log(this)
+                            // console.log($('#tags-table tbody tr')[2])
+                            var data = table.row( this ).data();
+
+                            var content = '';
+                            for ( var i in data ){
+                                if (data[i] != '' && data[i] != null && col[i] != undefined) {
+                                    content =  content + '<li>' + col[i] + '<br />' + data[i] + '</li>'
+                                }
+                            }
+                         
+                            $('#modal-default .modal-body').html(content)
+                            $('#modal-default').modal({
+                                keyboard: true
+                            })
+                        } );
 
                         table.on('preXhr.dt', function () {
                             loadShow();
