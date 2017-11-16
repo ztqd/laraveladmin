@@ -115,7 +115,7 @@
             $.ajax({
                 url: 'maptypeajax',
                 
-                data: {type:{{$type}}},
+                data: {type:{{$type}} },
                 dataType: 'json',
             })
             .done(function(res) {
@@ -150,7 +150,7 @@
                         }
                         // var marker = new BMap.Marker(point, {icon: icon1}); //
 
-                        marker.info = list[i].name;
+                        marker.info = '<p>' + list[i].name + '</p><p>星级：' + list[i].starlevel + '</p><p>检查时间：' + list[i].checktime + '<p>是否整改：' +  (list[i].staus == 2? '是': '否') + '</p>';
                         map.addOverlay(marker);
 
                         marker.addEventListener('click', function (e) {

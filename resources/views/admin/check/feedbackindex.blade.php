@@ -27,6 +27,17 @@
                 @include('admin.partials.errors')
                 @include('admin.partials.success')
                 <div class="box-body">
+                <select name="" id="xuanze">
+                    <option value="d">q</option>
+                    <option value="2">t</option>
+                    <option value="3">y</option>
+                </select>
+                <select name="" id="xuanze2">
+                    <option value="g">q</option>
+                    <option value="i">f</option>
+                    <option value="h">y</option>
+                </select>
+                <button class="sou">搜索</button>
                     <table id="tags-table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
@@ -154,6 +165,9 @@
 
                                 }
                                 }
+                            ],
+                            aoColumnDefs: [
+                                {"bSearchable": false, "aTargets": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
                             ]
                         });
 
@@ -171,7 +185,14 @@
                             });
                         }).draw();
 
-
+                        // table.search({
+                        //     a: 'ds'
+                        // }
+                        // )
+                        $('.sou').on('click', function(event) {
+                            // table.search('c' + ',' + $('#xuanze').val(), $('#xuanze2').val()).draw()
+                            table.draw()
+                        });
 
                     });
                 </script>
