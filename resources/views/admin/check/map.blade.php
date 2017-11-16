@@ -79,14 +79,7 @@
    
 
     <script>
-        $(function() {
-            var data = {!! $reports !!};
-
-            // new Chart($('#stats-doughnut-chart')[0].getContext('2d'))
-            //     .Doughnut(data, {
-            //         animationEasing : "easeOutQuart"
-            //     });
-        });
+        
     </script>
 @endsection
 @section('js')
@@ -94,7 +87,7 @@
     <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=piXQ5CgHFqEefqCVbhhBFfe6HjF7l4zW"></script>
     <script type="text/javascript">
         $(function() {
-            var data = {!! $reports !!};
+            
 
             var icon1 = new BMap.Icon('/img/star1.png', new BMap.Size(20, 35), {
                 imageSize: new BMap.Size(20, 30)
@@ -120,8 +113,10 @@
             map.enableScrollWheelZoom(true);  
             map.addControl(new BMap.NavigationControl())
             $.ajax({
-                url: 'check/map',
-                dataType: 'json'
+                url: 'maptypeajax',
+                
+                data: {type:{{$type}}},
+                dataType: 'json',
             })
             .done(function(res) {
                 console.log("success");

@@ -702,4 +702,103 @@ class CheckController extends Controller
 
         return view('admin.check.index');
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function maptypeajax(Request $request )
+    {
+            $type = $request->get('type');
+            $data = array();
+
+
+            $data['recordsTotal'] = Check::count();
+
+            $start = 0;
+            $length = 30;
+
+            if(auth('admin')->user()->hasRole('areaadmin')){
+                $area = auth('admin')->user()->area;
+
+                $checks = Check::select('checks.*', 'targets.lon',
+            'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')->where('checks.type',$type)->join('targets',function($join)use ($area){
+                    $join->on('checks.name','=','targets.name')
+                        ->where('area',$area);
+                })->leftjoin('checks as oc',function($join){
+                                 $join->on('checks.name','=','oc.name')
+                                ->where('checks.id','<','oc.id');
+                     })->get();
+
+            }else{
+
+                $checks =Check::select('checks.*', 'targets.lon',
+            'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')
+            ->where('checks.type',$type)->join('targets',function($join) {
+                    $join->on('checks.name','=','targets.name');
+
+                })->leftjoin('checks as oc',function($join){
+                                 $join->on('checks.name','=','oc.name')
+                                ->where('checks.id','<','oc.id');
+                     })->get();
+
+
+            }
+            $data['checks'] = $checks;
+
+
+            return response()->json($data);
+       
+    }
+/**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function maptype(Request $request )
+    {
+        $type = $request->get('type');
+        if ($request->ajax()) {
+            $data = array();
+
+
+            $data['recordsTotal'] = Check::count();
+
+            $start = 0;
+            $length = 30;
+
+            if(auth('admin')->user()->hasRole('areaadmin')){
+                $area = auth('admin')->user()->area;
+
+                $checks = Check::where('type',$type)->join('targets',function($join)use ($area){
+                    $join->on('checks.name','=','targets.name')
+                        ->where('area',$area);
+                        })->leftjoin('checks as oc',function($join){
+                                 $join->on('checks.name','=','oc.name')
+                                ->where('checks.id','<',oc.id);
+                     })->get();
+
+            }else{
+
+                $checks =Check::where('type',$type)->join('targets',function($join) {
+                    $join->on('checks.name','=','targets.name');
+
+                })->leftjoin('checks as oc',function($join){
+                                 $join->on('checks.name','=','oc.name')
+                                ->where('checks.id','<',oc.id);
+                     })->get();
+
+
+            }
+            $data['checks'] = $checks;
+
+
+            return response()->json($data);
+        }
+        $data['type']=$type;
+
+        return view('admin.check.map',$data);
+    }
+
+
 }

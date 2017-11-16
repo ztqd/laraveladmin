@@ -69,6 +69,13 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::get('check/{id}/feedback', ['as' => 'admin.check.feedback', 'uses' => 'CheckController@feedback']);
 
 
+    Route::any('check/maptypeajax', ['as' => 'admin.check.map', 'uses' => 'CheckController@maptypeajax']);
+    Route::any('check/maptype', ['as' => 'admin.check.map', 'uses' => 'CheckController@maptype']);
+    
+    
+
+
+
     Route::any('check/map', ['as' => 'admin.check.map', 'uses' => 'CheckController@checkmap']);
     Route::get('check/index', ['as' => 'admin.check.index', 'uses' => 'CheckController@index']);
     Route::post('check/index', ['as' => 'admin.check.index', 'uses' => 'CheckController@index']);
