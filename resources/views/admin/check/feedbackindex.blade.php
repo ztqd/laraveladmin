@@ -27,6 +27,57 @@
                 @include('admin.partials.errors')
                 @include('admin.partials.success')
                 <div class="box-body">
+
+<!-- 搜索框 -->
+                    <table cellpadding="2" cellspacing="0" border="0" style="width: 67%; margin: 0 auto 2em auto;">
+                        <thead>
+                        <tr>
+                            <th>目标列</th>
+                            <th>查询内容</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="filter_col2" data-column="1">
+                            <td>类型</td>
+                            <td align="center">
+
+                                <select  class='form-control' id="col1_filter" name="col1_filter" autocomplete="off"><option value='1'>综合楼安全检查</option>
+<option value='2'>营业厅安全检查</option>
+<option value='3'>通信基站安全检查</option>
+<option value='4'>工程建设施工检查</option>
+ option></select>
+                            </td>
+                        </tr>
+                        <tr id="filter_col3" data-column="2">
+                            <td>县区</td>
+                            <td align="center">
+                                <select  class='form-control' id="col2_filter" name="col2_filter" autocomplete="off">
+<option value='宿城区'>宿城区</option>
+<option value='宿豫区 '>宿豫区 </option>
+<option value='沭阳县'>沭阳县</option>
+<option value='泗洪县'>泗洪县</option>
+<option value='泗阳县'>泗阳县</option></select>
+                            </td>
+                        </tr>
+                         
+
+                        <tr id="filter_col6" data-column="3">
+                            <td>名称</td>
+                            <td align="center"><input type="text"  class='form-control' id="col3_filter"></td>
+
+                        </tr>
+                        <tr id="filter_col7" data-column="9">
+                            <td>时间</td>
+                            <td align="center">
+                                <input type="text"  placeholder="开始时间" class=" pull-left" data-date-format="yyyy-mm-dd" id="start_time" name="start_time"  >
+
+                                <input type="text" placeholder="结束时间"  data-date-format="yyyy-mm-dd" id="end_time" name="end_time" onchange="$('#col8_filter').val($('#start_time').val()+':'+$('#end_time').val());filterColumn(8);" >
+                                <input type="hidden" class="column_filter" id="col8_filter"></td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+ 
                     <table id="tags-table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
@@ -43,7 +94,7 @@
                             <th class="hidden-sm">反馈</th>
                             <th class="hidden-md">反馈时间</th>
                             <th class="hidden-md">反馈人</th>
-                            <th data-sortable="false">操作</th>
+                            
                         </tr>
                         </thead>
                         <tbody>
@@ -83,10 +134,33 @@
             </div>
             @stop
 
+              @section('css')
+                @parent
+                <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker-bs3.css">
+                <!-- bootstrap datepicker -->
+                <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
+
+            @stop
+
+
             @section('js')
-                <script>
+                @parent
+                <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+                <script src="/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+                <script type="text/javascript">
+                    $('#start_time').datepicker({
+                        language: 'zh-CN',
+                        autoclose: true
+                    });
+                    $('#end_time').datepicker({
+                        language: 'zh-CN',
+                        autoclose: true
+                    });
+                
                     $(function () {
                         var table = $("#tags-table").DataTable({
+                           "scrollX": true,
                             language: {
                                 "sProcessing": "处理中...",
                                 "sLengthMenu": "显示 _MENU_ 项结果",
@@ -124,7 +198,7 @@
                                 {"data": "id"},
                                 {"data": "type"},
                                 {"data": "area"},
-                                {"data": "checkcontent"},
+                                {"data": "name"},
                                 {"data": "memo"},
                                 {"data": "starlevel"},
                                 {"data": "checkusername"},
@@ -138,21 +212,8 @@
                             ],
                             columnDefs: [
                                 {
-                                    'targets': -1, "render": function (data, type, row) {
-                                    var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.check.edit') ? 1 : 0}};
-                                    var row_feedback = {{Gate::forUser(auth('admin')->user())->check('admin.check.feedback') ? 1 : 0}};
-                                    var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.check.destroy') ? 1 :0}};
-                                    var str = '';
-
-                                    //编辑
-                                    if (row_feedback&&row['starlevel']<5) {
-                                        str += '<a style="margin:3px;" href="/admin/check/' + row['id'] + '/feedback" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 反馈</a>';
-                                    }
-
-
-                                    return str;
-
-                                }
+                                    
+                                
                                 }
                             ]
                         });
@@ -174,5 +235,39 @@
 
 
                     });
+                    function filterGlobal () {
+                        $('#tags-table').DataTable().search(
+                                $('#global_filter').val()
+
+                        ).draw();
+                    }
+
+                    function filterColumn ( i ) {
+                        $('#tags-table').DataTable().column( i ).search(
+                                $('#col'+i+'_filter').val()
+
+                        ).draw();
+                    }
+                    $(document).ready(function() {
+
+                        // DataTable
+                        var table = $('#tags-table').DataTable();
+                        
+                        $('input.global_filter').on( 'keyup click', function () {
+                            filterGlobal();
+                        } );
+
+                        $('input.column_filter').on( 'keyup click blur', function () {
+                            filterColumn( $(this).parents('tr').attr('data-column') );
+                        } );
+                        $('select.form-control').on( 'change', function () {
+                            filterColumn( $(this).parents('tr').attr('data-column') );
+                        } );
+                        $('input.form-control').on( 'keyup click blur', function () {
+                            filterColumn( $(this).parents('tr').attr('data-column') );
+                        } );
+
+
+                    } );
                 </script>
 @stop
