@@ -25,7 +25,7 @@ class AdminUserUpdateRequest extends Request
     {
         return [
             'name'=>'required|unique:admin_users,name,'.$this->get('id').'|max:255',
-            'email'=>'required|email|unique:admin_users,email,'.$this->get('id').'|max:255',
+            'email'=>'required|unique:admin_users,email,'.$this->get('id').'|max:255',
             'password'=>'confirmed|min:6|max:50'
         ];
     }

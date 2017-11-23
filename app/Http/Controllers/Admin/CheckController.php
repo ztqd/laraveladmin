@@ -20,16 +20,16 @@ class CheckController extends Controller
 {
     protected $fields = [
         'id' => '',
-		'type' => '',
-		'area' => '',
+        'type' => '',
+        'area' => '',
         'name' => '',
-		'checkcontent' => '',
-		'memo' => '',
-		'starlevel' => '',
-		'checkusername' => '',
-		'checkuserid' => '0',
-		'inspectionname' => '',
-		'checktime' => '',
+        'checkcontent' => '',
+        'memo' => '',
+        'starlevel' => '',
+        'checkusername' => '',
+        'checkuserid' => '0',
+        'inspectionname' => '',
+        'checktime' => '',
 
     ];
     protected $feedbackfields = [
@@ -45,7 +45,7 @@ class CheckController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request )
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $data = array();
@@ -58,15 +58,15 @@ class CheckController extends Controller
             $data['recordsTotal'] = Check::count();
 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area) {
-                        $query->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $area) {
+                        $query->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area) {
-                        $query->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $area) {
+                        $query->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
@@ -74,16 +74,16 @@ class CheckController extends Controller
                         ->get();
                 } else {
                     $data['recordsFiltered'] = Check::where(function ($query) use ($area) {
-                        $query->where('area',$area);
+                        $query->where('area', $area);
                     })->count();
                     $data['data'] = Check::where(function ($query) use ($area) {
-                        $query->where('area',$area);
+                        $query->where('area', $area);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 }
-            }else{
+            } else {
                 if (strlen($search['value']) > 0) {
                     $data['recordsFiltered'] = Check::where(function ($query) use ($search) {
                         $query->where('name', 'LIKE', '%' . $search['value'] . '%')
@@ -131,50 +131,50 @@ class CheckController extends Controller
             $data['recordsTotal'] = Check::count();
 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['data'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 }
-            }else{
+            } else {
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
@@ -185,10 +185,11 @@ class CheckController extends Controller
 
             return response()->json($data);
         }
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        return view('admin.check.index',$data);
+        return view('admin.check.index', $data);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -208,39 +209,39 @@ class CheckController extends Controller
             $data['recordsTotal'] = Check::count();
 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['data'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 }
-            }else{
+            } else {
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
@@ -248,10 +249,10 @@ class CheckController extends Controller
                         ->get();
                 } else {
                     $data['recordsFiltered'] = Check::where(function ($query) use ($type) {
-                        $query->where('type',$type);
+                        $query->where('type', $type);
                     })->count();
                     $data['data'] = Check::where(function ($query) use ($type) {
-                        $query->where('type',$type);
+                        $query->where('type', $type);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
@@ -262,9 +263,9 @@ class CheckController extends Controller
 
             return response()->json($data);
         }
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        return view('admin.check.index',$data);
+        return view('admin.check.index', $data);
     }
 
     /**
@@ -287,50 +288,50 @@ class CheckController extends Controller
             $data['recordsTotal'] = Check::count();
 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['data'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 }
-            }else{
+            } else {
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
@@ -341,10 +342,11 @@ class CheckController extends Controller
 
             return response()->json($data);
         }
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        return view('admin.check.index',$data);
+        return view('admin.check.index', $data);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -364,50 +366,50 @@ class CheckController extends Controller
             $data['recordsTotal'] = Check::count();
 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('type',$type)->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $area, $type) {
+                        $query->where('type', $type)->where('area', $area)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('type',$type)->where('area',$area);
+                    $data['data'] = Check::where(function ($query) use ($area, $type) {
+                        $query->where('type', $type)->where('area', $area);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 }
-            }else{
+            } else {
                 if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type)->where('name', 'LIKE', '%' . $search['value'] . '%')
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type)->where('name', 'LIKE', '%' . $search['value'] . '%')
                             ->orWhere('content', 'like', '%' . $search['value'] . '%');
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                         ->get();
                 } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['recordsFiltered'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
-                        $query->where('type',$type);
+                    $data['data'] = Check::where(function ($query) use ($search, $type) {
+                        $query->where('type', $type);
                     })
                         ->skip($start)->take($length)
                         ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
@@ -418,9 +420,9 @@ class CheckController extends Controller
 
             return response()->json($data);
         }
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        return view('admin.check.index',$data);
+        return view('admin.check.index', $data);
     }
 
     /**
@@ -439,65 +441,159 @@ class CheckController extends Controller
             $order = $request->get('order');
             $columns = $request->get('columns');
             $search = $request->get('search');
+
             $data['recordsTotal'] = Check::count();
+			$c = count($columns);
+			$data['c'] =$c;
+            unset($wherearray);
+            for ($i = 0, $c = count($columns); $i < $c; $i++) {
+                if ($i != 8 && $columns[$i]['searchable'] == "true" && $columns[$i]['search']['value'] != '') {
+                    $column_name = $columns[$i]['data'];
+                    $wherearray[$columns[$i]['data']] = $columns[$i]['search']['value'];
 
+					$data['c'] = $data['c'].$columns[$i]['data'].$columns[$i]['search']['value'];
+					 
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+                }
+            }
+			
+
+            $date = "";
+            if ($columns[8]['searchable'] == "true" && $columns[8]['search']['value'] != '') {
+                $date = $columns[8]['search']['value'];
+            }
+
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
-                if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search,$area) {
-                        $query->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
-                            ->orWhere('content', 'like', '%' . $search['value'] . '%');
-                    })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$area,$type) {
-                        $query->where('area',$area)->where('name', 'LIKE', '%' . $search['value'] . '%')
-                            ->orWhere('content', 'like', '%' . $search['value'] . '%');
-                    })
-                        ->skip($start)->take($length)
-                        ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                        ->get();
-                } else {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('area',$area);
-                    })->count();
-                    $data['data'] = Check::where(function ($query) use ($area,$type) {
-                        $query->where('area',$area);
-                    })
-                        ->skip($start)->take($length)
-                        ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                        ->get();
-                }
-            }else{
-                if (strlen($search['value']) > 0) {
-                    $data['recordsFiltered'] = Check::where(function ($query) use ($search) {
+            } else {
+                $area = "";
+            }
+            if (isset($wherearray)) {
+				$data['wherearray']=implode(',',$wherearray);
+                $data['recordsFiltered'] = Check::where($wherearray)
+                    ->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
                         $query->where('name', 'LIKE', '%' . $search['value'] . '%')
-                            ->orWhere('content', 'like', '%' . $search['value'] . '%');
-                    })->count();
-                    $data['data'] = Check::where(function ($query) use ($search,$type) {
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })->count();
+                $data['data'] = Check::where($wherearray)
+                    ->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
                         $query->where('name', 'LIKE', '%' . $search['value'] . '%')
-                            ->orWhere('content', 'like', '%' . $search['value'] . '%');
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->get();
+                $data['sql'] = Check::where($wherearray)
+                    ->where(function ($query) use ($search) {
+                        if (strlen($search['value']) > 0) {
+                            $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                                ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                        }
+                    })->where(function ($query) use ($area) {
+                        if ($area != "") {
+                            $query->where('area', $area);
+                        }
+                    })->where(function ($query) use ($date) {
+                        if (!empty($date)) {
+
+                            list($date_start, $date_end) = explode(':', $date);
+                            $query->where('checktime', ">", "$date_start")
+                                ->where('checktime', "<", "$date_end");
+                        }
                     })
-                        ->skip($start)->take($length)
-                        ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                        ->get();
-                } else {
-                    $data['recordsFiltered'] = Check::count();
-                    $data['data'] = Check::
-                    skip($start)->take($length)
-                        ->skip($start)->take($length)
-                        ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                        ->get();
-                }
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->toSql();
+            } else {
+                $data['recordsFiltered'] = Check::where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })->count();
+                $data['data'] = Check::where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->get();
+                $data['sql'] = Check::where(function ($query) use ($search) {
+                        if (strlen($search['value']) > 0) {
+                            $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                                ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                        }
+                    })->where(function ($query) use ($area) {
+                        if ($area != "") {
+                            $query->where('area', $area);
+                        }
+                    })->where(function ($query) use ($date) {
+                        if (!empty($date)) {
+
+                            list($date_start, $date_end) = explode(':', $date);
+                            $query->where('checktime', ">", "$date_start")
+                                ->where('checktime', "<", "$date_end");
+                        }
+                    })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->toSql();
             }
 
 
             return response()->json($data);
         }
-
-
         return view('admin.check.feedbackindex');
     }
-
 
 
     /**
@@ -513,19 +609,19 @@ class CheckController extends Controller
         foreach ($this->fields as $field => $default) {
             $data[$field] = old($field, $default);
         }
-        $data['subitem'] = Subitem::where('type',$type)
-            ->orderBy('sort','asc')
+        $data['subitem'] = Subitem::where('type', $type)
+            ->orderBy('sort', 'asc')
             ->get();
 
 
-        $targets= Target::where('type',$type)
-            ->orderBy('id','asc')
+        $targets = Target::where('type', $type)
+            ->orderBy('id', 'asc')
             ->get();
-        $data['target']['请选择县区']['请选择']="";
-        foreach ($targets as    $target){
-            $data['target'][$target->area][]= $target->name ;
+        $data['target']['请选择县区']['请选择'] = "";
+        foreach ($targets as $target) {
+            $data['target'][$target->area][] = $target->name;
         }
-        $data['type']  = $type;
+        $data['type'] = $type;
 
         return view("admin.check.create", $data);
     }
@@ -543,7 +639,7 @@ class CheckController extends Controller
             $check->$field = $request->get($field);
         }
         $type = $request->get('type');
-        $check->checkuserid=auth('admin')->user()->id;
+        $check->checkuserid = auth('admin')->user()->id;
         $check->save();
 
         event(new \App\Events\userActionEvent('\App\Models\Admin\Check', $check->id, 1, '添加了任务中心' . $check->name));
@@ -569,19 +665,20 @@ class CheckController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-{
-    $check = Check::find((int)$id);
-    if (!$check) return redirect('/admin/check')->withErrors("找不到该记录!");
+    {
+        $check = Check::find((int)$id);
+        if (!$check) return redirect('/admin/check')->withErrors("找不到该记录!");
 
-    foreach (array_keys($this->fields) as $field) {
-        $data[$field] = old($field, $check->$field);
+        foreach (array_keys($this->fields) as $field) {
+            $data[$field] = old($field, $check->$field);
+        }
+
+        $data['id'] = (int)$id;
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Check', $check->id, 3, '编辑了记录中心' . $check->name));
+
+        return view('admin.check.edit', $data);
     }
 
-    $data['id'] = (int)$id;
-    event(new \App\Events\userActionEvent('\App\Models\Admin\Check', $check->id, 3, '编辑了记录中心' . $check->name));
-
-    return view('admin.check.edit', $data);
-}
     /**
      * Show the form for editing the specified resource.
      *
@@ -621,6 +718,7 @@ class CheckController extends Controller
 
         return redirect('/admin/check')->withSuccess('反馈成功！');
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -634,11 +732,11 @@ class CheckController extends Controller
         foreach (array_keys($this->feedbackfields) as $field) {
             $check->$field = $request->get($field);
         }
-        $check->feedbackuser=auth('admin')->user()->id;
+        $check->feedbackuser = auth('admin')->user()->id;
         $check->save();
 
 
-        return redirect('/admin/check')->withSuccess('添加成功！');
+        return redirect('/admin/check' . $check->type . '/index')->withSuccess('添加成功！');
     }
 
     /**
@@ -667,7 +765,7 @@ class CheckController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkmap(Request $request )
+    public function checkmap(Request $request)
     {
         if ($request->ajax()) {
             $data = array();
@@ -677,18 +775,18 @@ class CheckController extends Controller
             $start = 0;
             $length = 30;
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
 
-                $checks = Check::join('targets',function($join)use ($area){
-                    $join->on('checks.name','=','targets.name')
-                        ->where('area',$area);
+                $checks = Check::join('targets', function ($join) use ($area) {
+                    $join->on('checks.name', '=', 'targets.name')
+                        ->where('area', $area);
                 })->get();
 
-            }else{
+            } else {
 
-                $checks =Check::join('targets',function($join) {
-                    $join->on('checks.name','=','targets.name');
+                $checks = Check::join('targets', function ($join) {
+                    $join->on('checks.name', '=', 'targets.name');
 
                 })->get();
 
@@ -702,60 +800,62 @@ class CheckController extends Controller
 
         return view('admin.check.index');
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function maptypeajax(Request $request )
+    public function maptypeajax(Request $request)
     {
-            $type = $request->get('type');
-            $data = array();
+        $type = $request->get('type');
+        $data = array();
 
 
-            $data['recordsTotal'] = Check::count();
+        $data['recordsTotal'] = Check::count();
 
-            $start = 0;
-            $length = 30;
+        $start = 0;
+        $length = 30;
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
-                $area = auth('admin')->user()->area;
+        if (auth('admin')->user()->hasRole('areaadmin')) {
+            $area = auth('admin')->user()->area;
 
-                $checks = Check::select('checks.*', 'targets.lon',
-            'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')->where('checks.type',$type)->join('targets',function($join)use ($area){
-                    $join->on('checks.name','=','targets.name')
-                        ->where('area',$area);
-                })->leftjoin('checks as oc',function($join){
-                                 $join->on('checks.name','=','oc.name')
-                                ->where('checks.id','<','oc.id');
-                     })->get();
+            $checks = Check::select('checks.*', 'targets.lon',
+                'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')->where('checks.type', $type)->join('targets', function ($join) use ($area) {
+                $join->on('checks.name', '=', 'targets.name')
+                    ->where('area', $area);
+            })->leftjoin('checks as oc', function ($join) {
+                $join->on('checks.name', '=', 'oc.name')
+                    ->where('checks.id', '<', 'oc.id');
+            })->get();
 
-            }else{
+        } else {
 
-                $checks =Check::select('checks.*', 'targets.lon',
-            'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')
-            ->where('checks.type',$type)->join('targets',function($join) {
-                    $join->on('checks.name','=','targets.name');
+            $checks = Check::select('checks.*', 'targets.lon',
+                'targets.lat', 'oc.status as ostatus', 'oc.starlevel as ostarlevel')
+                ->where('checks.type', $type)->join('targets', function ($join) {
+                    $join->on('checks.name', '=', 'targets.name');
 
-                })->leftjoin('checks as oc',function($join){
-                                 $join->on('checks.name','=','oc.name')
-                                ->where('checks.id','<','oc.id');
-                     })->get();
-
-
-            }
-            $data['checks'] = $checks;
+                })->leftjoin('checks as oc', function ($join) {
+                    $join->on('checks.name', '=', 'oc.name')
+                        ->where('checks.id', '<', 'oc.id');
+                })->get();
 
 
-            return response()->json($data);
-       
+        }
+        $data['checks'] = $checks;
+
+
+        return response()->json($data);
+
     }
-/**
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function maptype(Request $request )
+    public function maptype(Request $request)
     {
         $type = $request->get('type');
         if ($request->ajax()) {
@@ -767,26 +867,26 @@ class CheckController extends Controller
             $start = 0;
             $length = 30;
 
-            if(auth('admin')->user()->hasRole('areaadmin')){
+            if (auth('admin')->user()->hasRole('areaadmin')) {
                 $area = auth('admin')->user()->area;
 
-                $checks = Check::where('type',$type)->join('targets',function($join)use ($area){
-                    $join->on('checks.name','=','targets.name')
-                        ->where('area',$area);
-                        })->leftjoin('checks as oc',function($join){
-                                 $join->on('checks.name','=','oc.name')
-                                ->where('checks.id','<',oc.id);
-                     })->get();
+                $checks = Check::where('type', $type)->join('targets', function ($join) use ($area) {
+                    $join->on('checks.name', '=', 'targets.name')
+                        ->where('area', $area);
+                })->leftjoin('checks as oc', function ($join) {
+                    $join->on('checks.name', '=', 'oc.name')
+                        ->where('checks.id', '<', oc . id);
+                })->get();
 
-            }else{
+            } else {
 
-                $checks =Check::where('type',$type)->join('targets',function($join) {
-                    $join->on('checks.name','=','targets.name');
+                $checks = Check::where('type', $type)->join('targets', function ($join) {
+                    $join->on('checks.name', '=', 'targets.name');
 
-                })->leftjoin('checks as oc',function($join){
-                                 $join->on('checks.name','=','oc.name')
-                                ->where('checks.id','<',oc.id);
-                     })->get();
+                })->leftjoin('checks as oc', function ($join) {
+                    $join->on('checks.name', '=', 'oc.name')
+                        ->where('checks.id', '<', oc . id);
+                })->get();
 
 
             }
@@ -795,9 +895,9 @@ class CheckController extends Controller
 
             return response()->json($data);
         }
-        $data['type']=$type;
+        $data['type'] = $type;
 
-        return view('admin.check.map',$data);
+        return view('admin.check.map', $data);
     }
 
 
