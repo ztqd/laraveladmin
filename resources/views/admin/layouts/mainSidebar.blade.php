@@ -45,7 +45,7 @@
                     </ul>
                 </li>
             @endforeach
-
+<li  class="treeview  "><a href="/admin/logout"   >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 退出</a></li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>

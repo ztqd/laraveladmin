@@ -5,7 +5,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="tag" class="col-md-3 control-label">邮箱</label>
+    <label for="tag" class="col-md-3 control-label">手机</label>
     <div class="col-md-5">
         <input type="text" class="form-control" name="email" id="tag" value="{{ $email }}" autofocus>
     </div>

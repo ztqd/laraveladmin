@@ -38,7 +38,7 @@
                         <tr>
                             <th data-sortable="false" class="hidden-sm"></th>
                             <th class="hidden-sm">用户名</th>
-                            <th class="hidden-sm">邮箱</th>
+                            <th class="hidden-sm">手机</th>
                             <th class="hidden-sm">地区</th>
                             <th class="hidden-md">角色创建日期</th>
                             <th class="hidden-md">角色修改日期</th>

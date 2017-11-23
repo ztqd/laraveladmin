@@ -22,7 +22,7 @@
     }
     @media screen and (max-width: 768px) {
         #allmap {
-            height:50%;
+            height:100%;
         }
         .content {
             padding: 0;
@@ -30,7 +30,7 @@
     }
     @media screen and (min-width: 768px) {
         #allmap {
-            height:70%;
+            height:100%;
         }
     }
 </style>
@@ -41,38 +41,6 @@
         
     </div>
 </section>
-<div class="row visible-xs" style="padding: 20px 0;background: #fff;border-top: 1px solid #cdcdcd;">
-    <div class="col-xs-6 text-center syinner">
-        <a class="index_icon" href="/admin/log-viewer" style="background: #3E9EE0">
-                <i class="ace-icon fa fa-book white" style="font-size: 2em"></i>
-        </a>
-        <!-- <img src="assets/img/2.png" alt=""> -->
-        <div class="icon-text">可视化</div>
-    </div>
-    <div class="col-xs-6 text-center syinner">
-        <a class="index_icon" href="/admin/check1/index" style="background: #F67C3C">
-            <i class="ace-icon fa fa-star white" style="font-size: 2em"></i>
-        </a>
-        <!-- <img src="assets/img/2.png" alt=""> -->
-        <div class="icon-text">打分检查</div>
-    </div>
-</div>
-<div class="row visible-xs" style="padding-bottom: 23px;background: #fff;border-bottom: 1px solid #cdcdcd;">
-    <div class="col-xs-6 text-center syinner">
-        <a class="index_icon" href="/admin/feedback/index" style="background: #F36464">
-            <i class="ace-icon fa fa-calendar white" style="font-size: 2em"></i>
-        </a>
-        <!-- <img src="assets/img/2.png" alt=""> -->
-        <div class="icon-text">整改进度</div>
-    </div>
-    <div class="col-xs-6 text-center syinner">
-        <a class="index_icon" href="/admin/exposure/index" style="background: #16C3BC">
-            <i class="ace-icon fa fa-desktop white" style="font-size: 2em"></i>
-            <!-- </div> -->
-        </a>
-        <div class="icon-text">曝光台</div>
-    </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -115,7 +83,7 @@
             $.ajax({
                 url: 'maptypeajax',
                 
-                data: {type:{{$type}}},
+                data: {type:{{$type}} },
                 dataType: 'json',
             })
             .done(function(res) {
@@ -150,7 +118,7 @@
                         }
                         // var marker = new BMap.Marker(point, {icon: icon1}); //
 
-                        marker.info = list[i].name;
+                        marker.info = '<p>' + list[i].name + '</p><p>星级：' + list[i].starlevel + '</p><p>检查时间：' + list[i].checktime + '<p>是否整改：' +  (list[i].staus == 2? '是': '否') + '</p>';
                         map.addOverlay(marker);
 
                         marker.addEventListener('click', function (e) {

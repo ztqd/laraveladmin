@@ -52,11 +52,11 @@
                             <td>县区</td>
                             <td align="center">
                                 <select  class='form-control' id="col2_filter" name="col2_filter" autocomplete="off">
-<option value='宿城区'>宿城区</option>
-<option value='宿豫区 '>宿豫区 </option>
-<option value='沭阳县'>沭阳县</option>
-<option value='泗洪县'>泗洪县</option>
-<option value='泗阳县'>泗阳县</option></select>
+<option value='宿城'>宿城</option>
+<option value='宿豫'>宿豫</option>
+<option value='沭阳'>沭阳</option>
+<option value='泗洪'>泗洪</option>
+<option value='泗阳'>泗阳</option></select>
                             </td>
                         </tr>
                          
@@ -78,6 +78,7 @@
                         </tbody>
                     </table>
  
+
                     <table id="tags-table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
@@ -215,6 +216,9 @@
                                     
                                 
                                 }
+                            ],
+                            aoColumnDefs: [
+                                {"bSearchable": true, "aTargets": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
                             ]
                         });
 
@@ -232,7 +236,14 @@
                             });
                         }).draw();
 
-
+                        // table.search({
+                        //     a: 'ds'
+                        // }
+                        // )
+                        $('.sou').on('click', function(event) {
+                            // table.search('c' + ',' + $('#xuanze').val(), $('#xuanze2').val()).draw()
+                            table.draw()
+                        });
 
                     });
                     function filterGlobal () {

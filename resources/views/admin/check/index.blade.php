@@ -128,6 +128,7 @@
 
                       
                         var table = $("#tags-table").DataTable({
+                            "scrollX": true,
                             language: {
                                 "sProcessing": "处理中...",
                                 "sLengthMenu": "显示 _MENU_ 项结果",
@@ -165,7 +166,7 @@
                                 {"data": "id", "visible": false },
                                 {"data": "type"},
                                 {"data": "area"},
-                                {"data": "checkcontent"},
+                                {"data": "name"},
                                 {"data": "memo", "visible": false },
                                 {"data": "starlevel"},
                                 {"data": "checkusername", "visible": false },
