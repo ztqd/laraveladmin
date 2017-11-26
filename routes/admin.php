@@ -18,10 +18,13 @@ Route::post('logout', 'LoginController@logout');
 
 Route::get('/', 'IndexController@index');
 
-
+ 
 Route::get('index', ['as' => 'admin.index', 'uses' => function () {
     return redirect('/admin/log-viewer');
 }]);
+Route::get('keshihua',  function () {
+    return  view('admin.check.keshihua');
+} );
  
 
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {
@@ -86,7 +89,8 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::any('check4/index', ['as' => 'admin.check4.index', 'uses' => 'CheckController@index4']);
 
     Route::any('feedback/index', ['as' => 'admin.feedback.index', 'uses' => 'CheckController@feedbackindex']);
-
+    Route::any('expired/index', ['as' => 'admin.expired.index', 'uses' => 'CheckController@expiredindex']);
+ 
 //subitems 'admin.feedback.index', '整改进度
 //打分项目管理路由
     Route::get('subitem/index', ['as' => 'admin.subitem.index', 'uses' => 'SubitemController@index']);

@@ -14,7 +14,9 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">添加 </h3>
+                            <h3 class="panel-title">添加 
+                                <button class="btn btn-sm pull-right" style="margin-top: -5px" onclick="window.history.back(-1)">返回</button>
+                            </h3>   
                         </div>
                         <div class="panel-body">
 

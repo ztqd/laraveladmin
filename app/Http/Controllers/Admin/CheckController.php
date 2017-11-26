@@ -7,7 +7,7 @@ use App\Models\Admin\Check as Check;
 use App\Models\Admin\Subitem as Subitem;
 use App\Models\Admin\Target as Target;
 
-
+use DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -594,7 +594,177 @@ class CheckController extends Controller
         }
         return view('admin.check.feedbackindex');
     }
+/**
+     * Display a listing of the resource.
+     *
+     * @return
+     */
+    public function expiredindex(Request $request)
+    {
 
+        if ($request->ajax()) {
+            $data = array();
+            $data['draw'] = $request->get('draw');
+            $start = $request->get('start');
+            $length = $request->get('length');
+            $order = $request->get('order');
+            $columns = $request->get('columns');
+            $search = $request->get('search');
+
+            $data['recordsTotal'] = Check::count();
+            $c = count($columns);
+            $data['c'] =$c;
+            unset($wherearray);
+           
+
+            for ($i = 0, $c = count($columns); $i < $c; $i++) {
+                if ($i != 8 && $columns[$i]['searchable'] == "true" && $columns[$i]['search']['value'] != '') {
+                    $column_name = $columns[$i]['data'];
+                    $wherearray[$columns[$i]['data']] = $columns[$i]['search']['value'];
+
+                    
+                     
+
+                }
+            }
+            
+
+            $date = "";
+            if ($columns[8]['searchable'] == "true" && $columns[8]['search']['value'] != '') {
+                $date = $columns[8]['search']['value'];
+            }
+
+            if (auth('admin')->user()->hasRole('areaadmin')) {
+                $area = auth('admin')->user()->area;
+            } else {
+                $area = "";
+            }
+            if (isset($wherearray)) {
+                $data['wherearray']=implode(',',$wherearray);
+                $data['recordsFiltered'] = Check::where('status','!=','2')->where('checktime','<',DB::raw('date_sub(now(),interval 1 week)'))->where($wherearray)
+                    ->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })->count();
+                $data['data'] = Check::where('status','!=','2')->where('checktime','<',DB::raw('date_sub(now(),interval 1 week)'))->where($wherearray)
+                    ->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->get();
+                $data['sql'] = Check::where($wherearray)
+                    ->where(function ($query) use ($search) {
+                        if (strlen($search['value']) > 0) {
+                            $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                                ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                        }
+                    })->where(function ($query) use ($area) {
+                        if ($area != "") {
+                            $query->where('area', $area);
+                        }
+                    })->where(function ($query) use ($date) {
+                        if (!empty($date)) {
+
+                            list($date_start, $date_end) = explode(':', $date);
+                            $query->where('checktime', ">", "$date_start")
+                                ->where('checktime', "<", "$date_end");
+                        }
+                    })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->toSql();
+            } else {
+                $data['recordsFiltered'] = Check::where('status','!=','2')->where('checktime','<',DB::raw('date_sub(now(),interval 1 week)'))->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })->count();
+                $data['data'] = Check::where('status','!=','2')->where('checktime','<',DB::raw('date_sub(now(),interval 1 week)'))->where(function ($query) use ($search) {
+                    if (strlen($search['value']) > 0) {
+                        $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                            ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                    }
+                })->where(function ($query) use ($area) {
+                    if ($area != "") {
+                        $query->where('area', $area);
+                    }
+                })->where(function ($query) use ($date) {
+                    if (!empty($date)) {
+                        list($date_start, $date_end) = explode(':', $date);
+                        $query->where('checktime', ">", "$date_start")
+                            ->where('checktime', "<", "$date_end");
+                    }
+                })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->get();
+                $data['sql'] = Check::where('status','!=','2')->where('checktime','<',DB::raw('date_sub(now(),interval 1 week)'))->where(function ($query) use ($search) {
+                        if (strlen($search['value']) > 0) {
+                            $query->where('name', 'LIKE', '%' . $search['value'] . '%')
+                                ->orWhere('memo', 'like', '%' . $search['value'] . '%');
+                        }
+                    })->where(function ($query) use ($area) {
+                        if ($area != "") {
+                            $query->where('area', $area);
+                        }
+                    })->where(function ($query) use ($date) {
+                        if (!empty($date)) {
+
+                            list($date_start, $date_end) = explode(':', $date);
+                            $query->where('checktime', ">", "$date_start")
+                                ->where('checktime', "<", "$date_end");
+                        }
+                    })
+                    ->skip($start)->take($length)
+                    ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+                    ->toSql();
+            }
+
+
+            return response()->json($data);
+        }
+        return view('admin.check.expiredindex');
+    }
 
     /**
      * Show the form for creating a new resource.
