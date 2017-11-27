@@ -111,7 +111,10 @@ class CheckController extends Controller
 
         return view('admin.check.index');
     }
-
+public function keshihua(Request $request)
+    {
+        return view('admin.check.keshihua');
+    }
     /**
      * Display a listing of the resource.
      *

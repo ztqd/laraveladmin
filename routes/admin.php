@@ -22,9 +22,6 @@ Route::get('/', 'IndexController@index');
 Route::get('index', ['as' => 'admin.index', 'uses' => function () {
     return redirect('/admin/log-viewer');
 }]);
-Route::get('keshihua',  function () {
-    return  view('admin.check.keshihua');
-} );
  
 
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {
@@ -71,6 +68,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::any('check/{id}/feedbacksave', ['as' => 'admin.check.index', 'uses' => 'CheckController@feedbacksave']);
     Route::get('check/{id}/feedback', ['as' => 'admin.check.feedback', 'uses' => 'CheckController@feedback']);
 
+ Route::get('keshihua', [  'uses' => 'CheckController@keshihua']);
 
     Route::any('check/maptypeajax', ['as' => 'admin.check.map', 'uses' => 'CheckController@maptypeajax']);
     Route::any('check/maptype', ['as' => 'admin.check.map', 'uses' => 'CheckController@maptype']);
