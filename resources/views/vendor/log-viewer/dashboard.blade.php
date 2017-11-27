@@ -41,7 +41,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              {{-- <h3>150</h3> --}}
+              <h3>&nbsp;</h3>
 
               <p>可视化</p>
             </div>
@@ -56,14 +56,14 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              {{-- <h3>53</h3> --}}
+              <h3>&nbsp;</h3>
 
               <p>预警</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="check/maptype?type=2" class="small-box-footer">查看 <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/admin/expired/index" class="small-box-footer">查看 <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -71,14 +71,14 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              {{-- <h3>44</h3> --}}
+              <h3>&nbsp;</h3>
 
               <p>打分检查</p>
             </div>
             <div class="icon">
               <i class="fa fa-fw fa-tv"></i>
             </div>
-            <a href="check/maptype?type=3" class="small-box-footer">查看 <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="/admin/check1/index" class="small-box-footer">查看 <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -86,7 +86,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              {{-- <h3>65</h3> --}}
+              <h3>&nbsp;</h3>
 
               <p>整改进度</p>
             </div>
